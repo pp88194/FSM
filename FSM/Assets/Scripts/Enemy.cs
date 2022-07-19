@@ -2,17 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Enemy : MonoFSM<Enemy>
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] float moveSpeed = 1;
+    public float MoveSpeed => moveSpeed;
+    [SerializeField] float detectionDist = 3;
+    public float DetectionDist => detectionDist;
+    [HideInInspector] public Player target;
+    private void Awake()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        SetState(new EnemyIdleState());
     }
 }

@@ -118,3 +118,28 @@ public class PlayerAttackState : IState<Player>
 
     }
 }
+
+public class PlayerHitState : IState<Player>
+{
+    public Player Instance { get; set; }
+
+    IEnumerator C_Hit()
+    {
+        Instance.Anim.SetTrigger("Hit");
+        yield return new WaitForSeconds(0.2f);
+        Instance.SetState(new PlayerIdleState());
+    }
+    public void OnEnter(Player instance)
+    {
+        Instance = instance;
+        Instance.StartCoroutine(C_Hit());
+    }
+
+    public void OnExit()
+    {
+    }
+
+    public void OnUpdate()
+    {
+    }
+}

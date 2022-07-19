@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : MonoFSM<Player>
 {
     #region º¯¼ö
     [SerializeField] float moveSpeed;
@@ -11,19 +11,12 @@ public class Player : MonoBehaviour
     Vector2 dir;
     public Vector2 Dir => dir;
 
-    IState<Player> curState;
-
     SpriteRenderer spriteRenderer;
     public SpriteRenderer m_SpriteRenderer => spriteRenderer;
     Animator anim;
     public Animator Anim => anim;
     #endregion
-    public void SetState(IState<Player> state)
-    {
-        curState?.OnExit();
-        curState = state;
-        curState?.OnEnter(this);
-    }
+
     void InputDir()
     {
         dir = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
@@ -38,9 +31,9 @@ public class Player : MonoBehaviour
     {
         SetState(new PlayerIdleState());
     }
-    private void Update()
+    protected override void Update()
     {
         InputDir();
-        curState?.OnUpdate();
+        base.Update();
     }
 }
